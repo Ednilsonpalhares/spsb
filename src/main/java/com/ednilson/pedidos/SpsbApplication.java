@@ -8,8 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.ednilson.pedidos.domain.Categoria;
+import com.ednilson.pedidos.domain.Cidade;
+import com.ednilson.pedidos.domain.Estado;
 import com.ednilson.pedidos.domain.Produto;
 import com.ednilson.pedidos.repositories.CategoriaRepository;
+import com.ednilson.pedidos.repositories.CidadeRepository;
+import com.ednilson.pedidos.repositories.EstadoRepository;
 import com.ednilson.pedidos.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -20,6 +24,12 @@ public class SpsbApplication implements CommandLineRunner{
 	
 	@Autowired
 	private ProdutoRepository produtoRepo;
+	
+	@Autowired
+	private EstadoRepository estadoRepo;
+	
+	@Autowired
+	private CidadeRepository cidadeRepo;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpsbApplication.class, args);
@@ -39,10 +49,25 @@ public class SpsbApplication implements CommandLineRunner{
 
 		p1.getCategorias().addAll(Arrays.asList(cat1));
 		p2.getCategorias().addAll(Arrays.asList(cat1,cat2));
-		p3.getCategorias().addAll(Arrays.asList(cat1));
+		p3.getCategorias().addAll(Arrays.asList(cat1));	
 		
 		categoriaRepo.saveAll(Arrays.asList(cat1,cat2));
 		produtoRepo.saveAll(Arrays.asList(p1,p2,p3));
+		
+		Estado est1 = new Estado(null, "Minas Gerais");
+		Estado est2 = new Estado(null, "São Paulo");
+		
+		Cidade c1 = new Cidade(null, "Uberlandia",est1);
+		Cidade c2 = new Cidade(null, "São paulo",est2);
+		Cidade c3 = new Cidade(null, "Campinas",est2);
+		
+		est1.getCidades().addAll(Arrays.asList(c1));
+		est2.getCidades().addAll(Arrays.asList(c2,c3));
+		
+		estadoRepo.saveAll(Arrays.asList(est1,est2));
+		
+		cidadeRepo.saveAll(Arrays.asList(c1,c2));
+
 	}
 	
 }
