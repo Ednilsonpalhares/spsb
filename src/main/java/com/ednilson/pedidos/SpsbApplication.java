@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.ednilson.pedidos.domain.Categoria;
 import com.ednilson.pedidos.domain.Cidade;
+import com.ednilson.pedidos.domain.Cliente;
+import com.ednilson.pedidos.domain.Endereco;
 import com.ednilson.pedidos.domain.Estado;
 import com.ednilson.pedidos.domain.Produto;
+import com.ednilson.pedidos.domain.enums.TipoCliente;
 import com.ednilson.pedidos.repositories.CategoriaRepository;
 import com.ednilson.pedidos.repositories.CidadeRepository;
+import com.ednilson.pedidos.repositories.ClienteRepository;
+import com.ednilson.pedidos.repositories.EnderecoRepository;
 import com.ednilson.pedidos.repositories.EstadoRepository;
 import com.ednilson.pedidos.repositories.ProdutoRepository;
 
@@ -30,6 +35,12 @@ public class SpsbApplication implements CommandLineRunner{
 	
 	@Autowired
 	private CidadeRepository cidadeRepo;
+	
+	@Autowired
+	private ClienteRepository ClienteRepo;
+	
+	@Autowired
+	private EnderecoRepository EnderecoRepo;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpsbApplication.class, args);
@@ -67,6 +78,20 @@ public class SpsbApplication implements CommandLineRunner{
 		estadoRepo.saveAll(Arrays.asList(est1,est2));
 		
 		cidadeRepo.saveAll(Arrays.asList(c1,c2));
+		
+		Cliente cli1 = new Cliente(null,"Maria silva", "mria@gmail.com","70441269010", TipoCliente.PESSOA_FISICA);
+		
+		cli1.getTelefones().addAll(Arrays.asList("991540956", "991540957"));
+		
+		Endereco e1 = new Endereco(null, "Rua flores", "300", "Apto 303", "Jardim","5918200", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "37", "Apto 309", "Jardim","5918300", cli1, c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		
+		ClienteRepo.save(cli1);
+		
+		EnderecoRepo.saveAll(Arrays.asList(e1,e2));
+		
 
 	}
 	
