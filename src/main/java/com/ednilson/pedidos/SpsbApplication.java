@@ -13,6 +13,7 @@ import com.ednilson.pedidos.domain.Cidade;
 import com.ednilson.pedidos.domain.Cliente;
 import com.ednilson.pedidos.domain.Endereco;
 import com.ednilson.pedidos.domain.Estado;
+import com.ednilson.pedidos.domain.ItemPedido;
 import com.ednilson.pedidos.domain.Pagamento;
 import com.ednilson.pedidos.domain.PagamentoComBoleto;
 import com.ednilson.pedidos.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.ednilson.pedidos.repositories.CidadeRepository;
 import com.ednilson.pedidos.repositories.ClienteRepository;
 import com.ednilson.pedidos.repositories.EnderecoRepository;
 import com.ednilson.pedidos.repositories.EstadoRepository;
+import com.ednilson.pedidos.repositories.ItemPedidoRepository;
 import com.ednilson.pedidos.repositories.PagamentoRepository;
 import com.ednilson.pedidos.repositories.PedidoRepository;
 import com.ednilson.pedidos.repositories.ProdutoRepository;
@@ -55,6 +57,9 @@ public class SpsbApplication implements CommandLineRunner{
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepo;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepo;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpsbApplication.class, args);
@@ -123,6 +128,18 @@ public class SpsbApplication implements CommandLineRunner{
 		pedidoRepo.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepo.saveAll(Arrays.asList(pagto1,pagto2));
 		
+		ItemPedido ip1 = new ItemPedido(ped1,p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1,p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2,p2, 100.00, 1, 800.00);
+
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+	
+		itemPedidoRepo.saveAll(Arrays.asList(ip1,ip2,ip3));
 	}
 	
 }
